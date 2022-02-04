@@ -33,6 +33,11 @@ final class Field
     public $description;
 
     /**
+     * @var string
+     */
+    public $method;
+
+    /**
      * @var array<\GraphQL\Doctrine\Annotation\Argument>
      */
     public $args = [];
@@ -49,6 +54,7 @@ final class Field
             'type' => $this->type,
             'description' => $this->description,
             'args' => $args,
+            'method' => $this->method,
         ];
     }
 }

@@ -66,6 +66,10 @@ final class OutputFieldsConfigurationFactory extends AbstractFieldsConfiguration
             $field->name = $fieldName;
         }
 
+        if (!$field->method) {
+            $field->method = $method->getName();
+        }
+
         $docBlock = new DocBlockReader($method);
         if (!$field->description) {
             $field->description = $docBlock->getMethodDescription();

@@ -27,10 +27,11 @@ final class DefaultFieldResolver
     {
         /** @var string $fieldName */
         $fieldName = $info->fieldName;
-        $property = null;
+        $method    = $info->fieldDefinition->config['method'] ?? null;
+        $property  = null;
 
         if (is_object($source)) {
-            $property = $this->resolveObject($source, $args, $fieldName);
+            $property = $this->resolveObject($source, $args, $fieldName, $method);
         } elseif (is_array($source)) {
             $property = $this->resolveArray($source, $fieldName);
         }
@@ -43,9 +44,9 @@ final class DefaultFieldResolver
      *
      * @return mixed
      */
-    private function resolveObject(object $source, array $args, string $fieldName)
+    private function resolveObject(object $source, array $args, string $fieldName, ?string $method)
     {
-        $getter = $this->getGetter($source, $fieldName);
+        $getter = $this->getGetter($source, $fieldName, $method);
         if ($getter) {
             $args = $this->orderArguments($getter, $args);
 
@@ -72,15 +73,18 @@ final class DefaultFieldResolver
     /**
      * Return the getter/isser method if any valid one exists.
      */
-    private function getGetter(object $source, string $name): ?ReflectionMethod
+    private function getGetter(object $source, string $name, ?string $methodName): ?ReflectionMethod
     {
-        if (!preg_match('~^(is|has)[A-Z]~', $name)) {
-            $name = 'get' . ucfirst($name);
+        $class = new ReflectionClass($source);
+
+        if (!isset($methodName)) {
+            if (!preg_match('~^(is|has)[A-Z]~', $name)) {
+                $methodName = 'get' . ucfirst($name);
+            }   
         }
 
-        $class = new ReflectionClass($source);
-        if ($class->hasMethod($name)) {
-            $method = $class->getMethod($name);
+        if ($class->hasMethod($methodName)) {
+            $method = $class->getMethod($methodName);
             if ($method->getModifiers() & ReflectionMethod::IS_PUBLIC) {
                 return $method;
             }
