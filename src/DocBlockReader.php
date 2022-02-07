@@ -61,8 +61,22 @@ final class DocBlockReader
     {
         $name = preg_quote($param->getName());
 
+        $paramType = $param->getType();
+
+        if ($paramType instanceof \ReflectionNamedType && class_exists($paramType->getName())) {
+            $paramName = $paramType->getName();
+        }
+
         if (preg_match('~@param\h+(\H+)\h+\$' . $name . '(\h|\n)~', $this->comment, $m)) {
-            return trim($m[1]);
+            $docBlockType = trim($m[1]);
+            $docBlockTypeQuoted = preg_quote($docBlockType);
+
+            // Attempt to handle "used" classes in docblock
+            if (isset($paramName) && preg_match("/$docBlockTypeQuoted\$/", $paramName)) {
+                return $paramName;
+            } else {
+                return $docBlockType;
+            }
         }
 
         return null;
