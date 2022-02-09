@@ -20,8 +20,20 @@ use Doctrine\Common\Annotations\Annotation\Attributes;
  *     @Attribute("type", required=false, type="string"),
  *     @Attribute("description", required=false, type="string"),
  *     @Attribute("defaultValue", required=false, type="mixed"),
+ *     @Attribute("method", required=false, type="string")
  * })
  */
 final class Input extends AbstractAnnotation
 {
+    /** @var string */
+    public $method;
+
+    public function toArray(): array
+    {
+        $data = parent::toArray();
+
+        $data['method'] = $this->method;
+
+        return $data;
+    }
 }

@@ -62,6 +62,10 @@ final class InputFieldsConfigurationFactory extends AbstractFieldsConfigurationF
             $field->setName($fieldName);
         }
 
+        if (!$field->method) {
+            $field->method = $method->getName();
+        }
+
         $docBlock = new DocBlockReader($method);
         if (!$field->getDescription()) {
             $field->setDescription($docBlock->getMethodDescription());

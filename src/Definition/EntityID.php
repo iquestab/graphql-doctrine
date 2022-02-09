@@ -66,4 +66,12 @@ class EntityID
 
         return $entity;
     }
+
+    /**
+     * Method to convert to string
+     */
+    public function __toString()
+    {
+        return $this->getId();
+    }
 }
