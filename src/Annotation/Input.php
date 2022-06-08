@@ -29,12 +29,20 @@ final class Input extends AbstractAnnotation
     /** @var string */
     public $method;
 
+    /** @var bool */
+    public $updatable;
+
+    public function setUpdatable(?bool $updatable)
+    {
+        $this->updatable = $updatable ?? true;
+    }
+
     public function toArray(): array
     {
         $data = parent::toArray();
 
         $data['method'] = $this->method;
-        $data['updatable'] = $this->updatable ?? true;
+        $data['updatable'] = $this->updatable;
 
         return $data;
     }
