@@ -20,7 +20,7 @@ use Doctrine\Common\Annotations\Annotation\Attributes;
  *     @Attribute("type", required=false, type="string"),
  *     @Attribute("description", required=false, type="string"),
  *     @Attribute("defaultValue", required=false, type="mixed"),
- *     @Attribute("method", required=false, type="string")
+ *     @Attribute("method", required=false, type="string"),
  *     @Attribute("updatable", required=false, type="bool")
  * })
  */
