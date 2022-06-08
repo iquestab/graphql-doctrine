@@ -21,6 +21,7 @@ use Doctrine\Common\Annotations\Annotation\Attributes;
  *     @Attribute("description", required=false, type="string"),
  *     @Attribute("defaultValue", required=false, type="mixed"),
  *     @Attribute("method", required=false, type="string")
+ *     @Attribute("updatable", required=false, type="bool")
  * })
  */
 final class Input extends AbstractAnnotation
@@ -33,6 +34,7 @@ final class Input extends AbstractAnnotation
         $data = parent::toArray();
 
         $data['method'] = $this->method;
+        $data['updatable'] = $this->updatable ?? true;
 
         return $data;
     }
